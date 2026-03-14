@@ -22,11 +22,14 @@ const (
 
 // Client is the Vylth Flow API client.
 type Client struct {
-	Invoices *InvoiceService
-	Payouts  *PayoutService
-	Wallets  *WalletService
-	Swaps    *SwapService
-	Webhooks *WebhookService
+	Invoices      *InvoiceService
+	Payouts       *PayoutService
+	Wallets       *WalletService
+	Swaps         *SwapService
+	Webhooks      *WebhookService
+	PaymentLinks  *PaymentLinkService
+	Subscriptions *SubscriptionService
+	Teams         *TeamService
 
 	http *httpClient
 }
@@ -66,6 +69,9 @@ func New(apiKey string, opts ...Option) *Client {
 	c.Payouts = &PayoutService{http: h}
 	c.Wallets = &WalletService{http: h}
 	c.Swaps = &SwapService{http: h}
+	c.PaymentLinks = &PaymentLinkService{http: h}
+	c.Subscriptions = &SubscriptionService{http: h}
+	c.Teams = &TeamService{http: h}
 
 	return c
 }
