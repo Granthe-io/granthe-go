@@ -17,7 +17,7 @@ import "time"
 const (
 	DefaultBaseURL = "https://flow.vylth.com/api/flow"
 	DefaultTimeout = 30 * time.Second
-	Version        = "0.2.0"
+	Version        = "0.3.0"
 )
 
 // Client is the Vylth Flow API client.
