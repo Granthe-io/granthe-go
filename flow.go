@@ -17,7 +17,7 @@ import "time"
 const (
 	DefaultBaseURL = "https://flow.vylth.com/api/flow"
 	DefaultTimeout = 30 * time.Second
-	Version        = "0.3.0"
+	Version        = "0.3.2"
 )
 
 // Client is the Vylth Flow API client.
@@ -47,6 +47,11 @@ func WithTimeout(d time.Duration) Option {
 	return func(c *Client) { c.http.timeout = d }
 }
 
+// WithAPISecret sets the API secret for authenticated endpoints.
+func WithAPISecret(secret string) Option {
+	return func(c *Client) { c.http.apiSecret = secret }
+}
+
 // WithWebhookSecret sets the webhook signing secret for signature verification.
 func WithWebhookSecret(secret string) Option {
 	return func(c *Client) { c.Webhooks = NewWebhookService(secret) }
@@ -54,7 +59,7 @@ func WithWebhookSecret(secret string) Option {
 
 // New creates a new Vylth Flow client.
 func New(apiKey string, opts ...Option) *Client {
-	h := newHTTPClient(apiKey, DefaultBaseURL, DefaultTimeout)
+	h := newHTTPClient(apiKey, "", DefaultBaseURL, DefaultTimeout)
 
 	c := &Client{
 		http:     h,
