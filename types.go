@@ -120,10 +120,10 @@ type SwapParams struct {
 
 // WebhookEvent represents a verified webhook event.
 type WebhookEvent struct {
-	ID        string                 `json:"id"`
-	Type      string                 `json:"type"`
+	ID        string                 `json:"id,omitempty"`
+	Type      string                 `json:"event"`
 	Data      map[string]interface{} `json:"data"`
-	CreatedAt string                 `json:"created_at,omitempty"`
+	CreatedAt string                 `json:"timestamp,omitempty"`
 }
 
 // ListParams are common parameters for list endpoints.
