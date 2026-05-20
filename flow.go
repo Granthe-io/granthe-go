@@ -1,4 +1,4 @@
-// Package flow provides the official Go SDK for Vylth Flow —
+// Package flow provides the official Go SDK for Flow —
 // self-custody crypto payment processing.
 //
 // Usage:
@@ -20,7 +20,7 @@ const (
 	Version        = "0.4.0"
 )
 
-// Client is the Vylth Flow API client.
+// Client is the Flow API client.
 type Client struct {
 	Invoices      *InvoiceService
 	Payouts       *PayoutService
@@ -57,7 +57,7 @@ func WithWebhookSecret(secret string) Option {
 	return func(c *Client) { c.Webhooks = NewWebhookService(secret) }
 }
 
-// New creates a new Vylth Flow client.
+// New creates a new Flow client.
 func New(apiKey string, opts ...Option) *Client {
 	h := newHTTPClient(apiKey, "", DefaultBaseURL, DefaultTimeout)
 

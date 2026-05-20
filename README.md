@@ -1,6 +1,6 @@
-# Vylth Flow Go SDK
+# Flow Go SDK
 
-Official Go SDK for [Vylth Flow](https://flow.vylth.com) — self-custody crypto payment processing.
+Official Go SDK for [Flow](https://flow.vylth.com) — self-custody crypto payment processing.
 
 ## Installation
 
