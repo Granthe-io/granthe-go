@@ -15,7 +15,7 @@ package flow
 import "time"
 
 const (
-	DefaultBaseURL = "https://app.vylthflow.com/api/flow"
+	DefaultBaseURL = "https://app.granthe.io/api/flow"
 	DefaultTimeout = 30 * time.Second
 	Version        = "0.4.0"
 )

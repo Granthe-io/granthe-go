@@ -1,11 +1,11 @@
 # Flow Go SDK
 
-Official Go SDK for [Flow](https://flow.vylth.com) — self-custody crypto payment processing.
+Official Go SDK for [Flow](https://granthe.io) — self-custody crypto payment processing.
 
 ## Installation
 
 ```bash
-go get github.com/VYLTH/flow-go
+go get github.com/Granthe-io/granthe-go
 ```
 
 ## Quick Start
@@ -18,7 +18,7 @@ import (
     "fmt"
     "log"
 
-    flow "github.com/VYLTH/flow-go"
+    flow "github.com/Granthe-io/granthe-go"
 )
 
 func main() {
