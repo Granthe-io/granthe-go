@@ -1,4 +1,4 @@
-package flow
+package granthe
 
 // Invoice represents a payment invoice.
 type Invoice struct {

@@ -1,38 +1,38 @@
-package flow
+package granthe
 
 import "fmt"
 
-// FlowError is the base error type for all API errors.
-type FlowError struct {
+// GrantheError is the base error type for all API errors.
+type GrantheError struct {
 	Message string `json:"message"`
 	Code    string `json:"code"`
 	Status  int    `json:"status"`
 }
 
-func (e *FlowError) Error() string {
+func (e *GrantheError) Error() string {
 	return fmt.Sprintf("flow: %s (code=%s, status=%d)", e.Message, e.Code, e.Status)
 }
 
 // AuthenticationError indicates an invalid or missing API key.
-type AuthenticationError struct{ FlowError }
+type AuthenticationError struct{ GrantheError }
 
 // NotFoundError indicates the requested resource was not found.
-type NotFoundError struct{ FlowError }
+type NotFoundError struct{ GrantheError }
 
 // ValidationError indicates invalid request parameters.
 type ValidationError struct {
-	FlowError
+	GrantheError
 	Errors []map[string]string `json:"errors"`
 }
 
 // RateLimitError indicates too many requests.
 type RateLimitError struct {
-	FlowError
+	GrantheError
 	RetryAfter float64 `json:"retry_after"`
 }
 
 // ServerError indicates a server-side error.
-type ServerError struct{ FlowError }
+type ServerError struct{ GrantheError }
 
 // InvalidSignatureError indicates webhook signature verification failed.
 type InvalidSignatureError struct {

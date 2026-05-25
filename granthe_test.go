@@ -1,4 +1,4 @@
-package flow
+package granthe
 
 import (
 	"context"
@@ -101,13 +101,13 @@ func TestListInvoices(t *testing.T) {
 func TestCreatePayout(t *testing.T) {
 	client, ts := setupTestServer(t, func(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(Payout{
-			ID: "po_123", Amount: 50, Currency: "USDT", Status: "pending",
+			ID: "po_123", GrossAmount: 50, Currency: "USDT", Status: "pending",
 		})
 	})
 	defer ts.Close()
 
 	po, err := client.Payouts.Create(context.Background(), &CreatePayoutParams{
-		Amount: 50, Currency: "USDT", Network: "tron", Destination: "T...",
+		Amount: 50, Currency: "USDT", Network: "tron", RecipientAddress: "T...",
 	})
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -157,11 +157,11 @@ func TestSwapQuote(t *testing.T) {
 
 func TestWebhookVerify(t *testing.T) {
 	secret := "whsec_test_secret"
-	payload := []byte(`{"id":"evt_123","type":"invoice.paid","data":{"invoice_id":"inv_123"}}`)
+	payload := []byte(`{"id":"evt_123","event":"invoice.paid","data":{"invoice_id":"inv_123"}}`)
 
 	mac := hmac.New(sha256.New, []byte(secret))
 	mac.Write(payload)
-	signature := hex.EncodeToString(mac.Sum(nil))
+	signature := "sha256=" + hex.EncodeToString(mac.Sum(nil))
 
 	client := New("test_key", WithWebhookSecret(secret))
 
@@ -191,7 +191,7 @@ func TestWebhookIsValid(t *testing.T) {
 
 	mac := hmac.New(sha256.New, []byte(secret))
 	mac.Write(payload)
-	sig := hex.EncodeToString(mac.Sum(nil))
+	sig := "sha256=" + hex.EncodeToString(mac.Sum(nil))
 
 	client := New("test_key", WithWebhookSecret(secret))
 	if !client.Webhooks.IsValid(payload, sig) {

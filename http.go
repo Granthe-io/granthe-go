@@ -1,4 +1,4 @@
-package flow
+package granthe
 
 import (
 	"bytes"
@@ -83,7 +83,7 @@ func (h *httpClient) do(ctx context.Context, method, path string, body interface
 				time.Sleep(time.Duration(1<<attempt) * 500 * time.Millisecond)
 				continue
 			}
-			return nil, &FlowError{Message: err.Error(), Code: "network_error"}
+			return nil, &GrantheError{Message: err.Error(), Code: "network_error"}
 		}
 		defer resp.Body.Close()
 
@@ -117,9 +117,9 @@ func (h *httpClient) do(ctx context.Context, method, path string, body interface
 	}
 
 	if lastErr != nil {
-		return nil, &FlowError{Message: lastErr.Error(), Code: "network_error"}
+		return nil, &GrantheError{Message: lastErr.Error(), Code: "network_error"}
 	}
-	return nil, &FlowError{Message: "max retries exceeded", Code: "network_error"}
+	return nil, &GrantheError{Message: "max retries exceeded", Code: "network_error"}
 }
 
 func (h *httpClient) get(ctx context.Context, path string, params map[string]string) ([]byte, error) {
@@ -155,24 +155,24 @@ func parseError(status int, body []byte, headers http.Header) error {
 		msg = string(body)
 	}
 
-	base := FlowError{Message: msg, Code: errBody.Code, Status: status}
+	base := GrantheError{Message: msg, Code: errBody.Code, Status: status}
 
 	switch status {
 	case 401:
-		return &AuthenticationError{FlowError: base}
+		return &AuthenticationError{GrantheError: base}
 	case 404:
-		return &NotFoundError{FlowError: base}
+		return &NotFoundError{GrantheError: base}
 	case 422:
-		return &ValidationError{FlowError: base, Errors: errBody.Errors}
+		return &ValidationError{GrantheError: base, Errors: errBody.Errors}
 	case 429:
 		var retryAfter float64
 		if ra := headers.Get("Retry-After"); ra != "" {
 			retryAfter, _ = strconv.ParseFloat(ra, 64)
 		}
-		return &RateLimitError{FlowError: base, RetryAfter: retryAfter}
+		return &RateLimitError{GrantheError: base, RetryAfter: retryAfter}
 	default:
 		if status >= 500 {
-			return &ServerError{FlowError: base}
+			return &ServerError{GrantheError: base}
 		}
 		return &base
 	}

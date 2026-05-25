@@ -1,6 +1,6 @@
-# Flow Go SDK
+# Granthe Go SDK
 
-Official Go SDK for [Flow](https://granthe.io) — self-custody crypto payment processing.
+Official Go SDK for [Granthe](https://granthe.io) — institutional liquidity rail for crypto settlement.
 
 ## Installation
 
@@ -18,14 +18,14 @@ import (
     "fmt"
     "log"
 
-    flow "github.com/Granthe-io/granthe-go"
+    granthe "github.com/Granthe-io/granthe-go"
 )
 
 func main() {
-    client := flow.New("vf_live_...")
+    client := granthe.New("vf_live_...")
 
     // Create an invoice
-    invoice, err := client.Invoices.Create(context.Background(), &flow.CreateInvoiceParams{
+    invoice, err := client.Invoices.Create(context.Background(), &granthe.CreateInvoiceParams{
         Amount:   100,
         Currency: "USDT",
         Network:  "tron",
@@ -43,7 +43,7 @@ func main() {
 
 ```go
 // Create
-inv, _ := client.Invoices.Create(ctx, &flow.CreateInvoiceParams{
+inv, _ := client.Invoices.Create(ctx, &granthe.CreateInvoiceParams{
     Amount: 100, Currency: "USDT", Network: "tron",
     Description: "Order #123",
     CallbackURL: "https://example.com/webhook",
@@ -53,7 +53,7 @@ inv, _ := client.Invoices.Create(ctx, &flow.CreateInvoiceParams{
 inv, _ := client.Invoices.Get(ctx, "inv_123")
 
 // List
-list, _ := client.Invoices.List(ctx, &flow.ListParams{Page: 1, Limit: 20})
+list, _ := client.Invoices.List(ctx, &granthe.ListParams{Page: 1, Limit: 20})
 
 // Cancel
 inv, _ := client.Invoices.Cancel(ctx, "inv_123")
@@ -63,33 +63,33 @@ inv, _ := client.Invoices.Cancel(ctx, "inv_123")
 
 ```go
 // Create
-payout, _ := client.Payouts.Create(ctx, &flow.CreatePayoutParams{
+payout, _ := client.Payouts.Create(ctx, &granthe.CreatePayoutParams{
     Amount: 50, Currency: "USDT", Network: "tron",
     Destination: "TXyz...",
 })
 
 // Batch create
-payouts, _ := client.Payouts.CreateBatch(ctx, []*flow.CreatePayoutParams{
+payouts, _ := client.Payouts.CreateBatch(ctx, []*granthe.CreatePayoutParams{
     {Amount: 50, Currency: "USDT", Network: "tron", Destination: "TXyz..."},
     {Amount: 25, Currency: "USDT", Network: "tron", Destination: "TAbc..."},
 })
 
 // Get & List
 payout, _ := client.Payouts.Get(ctx, "po_123")
-list, _ := client.Payouts.List(ctx, &flow.ListParams{Status: "completed"})
+list, _ := client.Payouts.List(ctx, &granthe.ListParams{Status: "completed"})
 ```
 
 ### Wallets
 
 ```go
 // Generate
-wallet, _ := client.Wallets.Generate(ctx, &flow.GenerateWalletParams{
+wallet, _ := client.Wallets.Generate(ctx, &granthe.GenerateWalletParams{
     Network: "tron", Currency: "USDT", Label: "deposits",
 })
 
 // Get, List, Balance
 wallet, _ := client.Wallets.Get(ctx, "w_123")
-list, _ := client.Wallets.List(ctx, &flow.ListParams{Network: "tron"})
+list, _ := client.Wallets.List(ctx, &granthe.ListParams{Network: "tron"})
 wallet, _ := client.Wallets.Balance(ctx, "w_123")
 ```
 
@@ -97,12 +97,12 @@ wallet, _ := client.Wallets.Balance(ctx, "w_123")
 
 ```go
 // Get quote
-quote, _ := client.Swaps.Quote(ctx, &flow.SwapParams{
+quote, _ := client.Swaps.Quote(ctx, &granthe.SwapParams{
     FromCurrency: "USDT", ToCurrency: "BTC", Amount: 1000,
 })
 
 // Execute swap
-swap, _ := client.Swaps.Create(ctx, &flow.SwapParams{
+swap, _ := client.Swaps.Create(ctx, &granthe.SwapParams{
     FromCurrency: "USDT", ToCurrency: "BTC", Amount: 1000,
 })
 
@@ -115,7 +115,7 @@ list, _ := client.Swaps.List(ctx, nil)
 
 ```go
 // With webhook secret
-client := flow.New("vf_live_...", flow.WithWebhookSecret("whsec_..."))
+client := granthe.New("vf_live_...", granthe.WithWebhookSecret("whsec_..."))
 
 // Verify in HTTP handler
 func webhookHandler(w http.ResponseWriter, r *http.Request) {
@@ -148,15 +148,15 @@ if client.Webhooks.IsValid(payload, signature) {
 inv, err := client.Invoices.Get(ctx, "inv_123")
 if err != nil {
     switch e := err.(type) {
-    case *flow.AuthenticationError:
+    case *granthe.AuthenticationError:
         // Invalid API key
-    case *flow.NotFoundError:
+    case *granthe.NotFoundError:
         // Resource not found
-    case *flow.ValidationError:
+    case *granthe.ValidationError:
         // Invalid parameters — check e.Errors
-    case *flow.RateLimitError:
+    case *granthe.RateLimitError:
         // Too many requests — check e.RetryAfter
-    case *flow.ServerError:
+    case *granthe.ServerError:
         // Server error — retry later
     default:
         // Other error
@@ -167,10 +167,10 @@ if err != nil {
 ## Configuration
 
 ```go
-client := flow.New("vf_live_...",
-    flow.WithBaseURL("https://custom-api.example.com"),
-    flow.WithTimeout(60 * time.Second),
-    flow.WithWebhookSecret("whsec_..."),
+client := granthe.New("vf_live_...",
+    granthe.WithBaseURL("https://custom-api.example.com"),
+    granthe.WithTimeout(60 * time.Second),
+    granthe.WithWebhookSecret("whsec_..."),
 )
 ```
 

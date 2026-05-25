@@ -1,26 +1,26 @@
-// Package flow provides the official Go SDK for Flow —
-// self-custody crypto payment processing.
+// Package granthe provides the official Go SDK for Granthe —
+// institutional liquidity rail for crypto settlement.
 //
 // Usage:
 //
-//	client := flow.New("vf_live_...", flow.WithWebhookSecret("whsec_..."))
+//	client := granthe.New("vf_live_...", granthe.WithWebhookSecret("whsec_..."))
 //
-//	invoice, err := client.Invoices.Create(ctx, &flow.CreateInvoiceParams{
+//	invoice, err := client.Invoices.Create(ctx, &granthe.CreateInvoiceParams{
 //	    Amount:   100,
 //	    Currency: "USDT",
 //	    Network:  "tron",
 //	})
-package flow
+package granthe
 
 import "time"
 
 const (
 	DefaultBaseURL = "https://app.granthe.io/api/flow"
 	DefaultTimeout = 30 * time.Second
-	Version        = "0.4.0"
+	Version        = "0.5.0"
 )
 
-// Client is the Flow API client.
+// Client is the Granthe API client.
 type Client struct {
 	Invoices      *InvoiceService
 	Payouts       *PayoutService
@@ -57,7 +57,7 @@ func WithWebhookSecret(secret string) Option {
 	return func(c *Client) { c.Webhooks = NewWebhookService(secret) }
 }
 
-// New creates a new Flow client.
+// New creates a new Granthe client.
 func New(apiKey string, opts ...Option) *Client {
 	h := newHTTPClient(apiKey, "", DefaultBaseURL, DefaultTimeout)
 
