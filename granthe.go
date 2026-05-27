@@ -15,9 +15,9 @@ package granthe
 import "time"
 
 const (
-	DefaultBaseURL = "https://app.granthe.io/api/flow"
+	DefaultBaseURL = "https://api.granthe.io/api/v1"
 	DefaultTimeout = 30 * time.Second
-	Version        = "0.5.0"
+	Version        = "0.6.0"
 )
 
 // Client is the Granthe API client.
